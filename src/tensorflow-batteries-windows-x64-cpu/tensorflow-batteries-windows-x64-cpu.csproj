@@ -14,6 +14,10 @@
     <Authors>hanabi1224</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>tensorflow native dlls (Windows x64 cpu)</Description>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/hanabi1224/tensorflow-batteries</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>tensorflow;</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
