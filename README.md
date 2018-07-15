@@ -4,4 +4,11 @@
 [![MIT License](https://img.shields.io/github/license/hanabi1224/tensorflow-batteries.svg)](https://github.com/hanabi1224/tensorflow-batteries/blob/master/LICENSE)
 ========
 
-Nuget package that provides tensorflow prebuilt dlls
+| windows-x64-cpu  | [![NuGet version](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-cpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-cpu)  |
+| windows-x64-gpu  | TODO  |
+| linux-cpu        | TODO  |
+| linux-gpu        | TODO  |
+| macos-cpu        | TODO  |
+| macos-gpu        | TODO  |
+
+Nuget package that provides tensorflow prebuilt dlls, package version matches tensorflow version
