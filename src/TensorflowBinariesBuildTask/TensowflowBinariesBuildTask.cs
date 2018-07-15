@@ -15,6 +15,8 @@ namespace TensorflowBinariesBuildTask
 
         public string PypiPackageVersion { get; set; }
 
+        public string PythonVersion { get; set; } = "cp36";
+
         public string Runtime { get; set; }
 
         public string OutputPath { get; set; }
@@ -33,7 +35,10 @@ namespace TensorflowBinariesBuildTask
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.Load(stream);
                 var anchors = htmlDoc.DocumentNode.SelectNodes(@".//div[@id='files']//td//a");
-                var selection = anchors.FirstOrDefault(_ => _.InnerText.ToLowerInvariant().Contains(Runtime.ToLowerInvariant()));
+                var selection = anchors
+                    .Where(_=>_.InnerText.ToLowerInvariant().Contains(PythonVersion))
+                    .First(_ => _.InnerText.ToLowerInvariant().Contains(Runtime.ToLowerInvariant()));
+
                 var wheelLink = selection.GetAttributeValue("href", null);
 
                 using (var ms = new MemoryStream(await httpClient.GetByteArrayAsync(wheelLink)))

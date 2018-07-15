@@ -14,15 +14,23 @@
     <Authors>hanabi1224</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>tensorflow native dlls (Windows x64 gpu)</Description>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/hanabi1224/tensorflow-batteries</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>tensorflow;</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup>
-    <BattaryFilePath>$(MSBuildProjectDirectory)libtensorflow.dll</BattaryFilePath>
+    <BattaryFilePath>$(MSBuildProjectDirectory)\libtensorflow.dll</BattaryFilePath>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="build.targets">
-      <PackagePath>build\build.targets</PackagePath>
+    <Content Include="..\build\build.props">
+      <PackagePath>build\$(PackageId).props</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\runtimes\python36.dll">
+      <PackagePath>runtimes\win-x64\native\python36.dll</PackagePath>
       <Pack>true</Pack>
     </Content>
   </ItemGroup>
