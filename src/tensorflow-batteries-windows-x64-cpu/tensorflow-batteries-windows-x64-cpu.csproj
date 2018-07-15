@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard1.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <PackageId>tensorflow-batteries-windows-x64-cpu</PackageId>
+    <TensorflowPackageName>tensorflow</TensorflowPackageName>
+    <TensorflowVersion>1.2.0</TensorflowVersion>
+    <PackageVersion>$(TensorflowVersion).0</PackageVersion>
+    <Authors>hanabi1224</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>tensorflow native dlls (Windows x64 cpu)</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BattaryFilePath>$(MSBuildProjectDirectory)libtensorflow.dll</BattaryFilePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="build.targets">
+      <PackagePath>build\build.targets</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+
+  <UsingTask TaskName="TensowflowBinariesBuildTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+
+  <Target Name="BeforeBuild" BeforeTargets="Build">
+    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
+    <TensowflowBinariesBuildTask PypiPackageName="$(TensorflowPackageName)" PypiPackageVersion="$(TensorflowVersion)" Runtime="win" OutputPath="$(BattaryFilePath)" />
+    <ItemGroup>
+      <Content Include="$(BattaryFilePath)">
+        <PackagePath>runtimes\win-x64\native\libtensorflow.dll</PackagePath>
+        <Pack>true</Pack>
+      </Content>
+    </ItemGroup>
+  </Target>
+
+</Project>
