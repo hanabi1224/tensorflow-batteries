@@ -10,10 +10,5 @@ before_build:
 - cmd: dotnet restore
 build:
   verbosity: minimal
-after_test:
-- choco install opencover.portable
-- choco install codecov
-- OpenCover.Console.exe -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test --verbosity q"
-- codecov -f "results.xml" 
 artifacts:
 - path: '**\*.nupkg'
