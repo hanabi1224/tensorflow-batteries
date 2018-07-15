@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscs", "Miscs", "{B484CBD7
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tensorflow-batteries-windows-x64-gpu", "src\tensorflow-batteries-windows-x64-gpu\tensorflow-batteries-windows-x64-gpu.csproj", "{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{5173CC95-9295-4139-A883-468ABC23C4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5173CC95-9295-4139-A883-468ABC23C4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5173CC95-9295-4139-A883-468ABC23C4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
