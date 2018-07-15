@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TensorflowBinariesBuildTask", "src\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj", "{DC33F1FC-00CB-4E1A-8AA8-03CC36308DEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TensorflowBinariesBuildTask.Tests", "test\TensorflowBinariesBuildTask.Tests\TensorflowBinariesBuildTask.Tests.csproj", "{7AE30308-0FC4-47E1-B440-EF5A53A872B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tensorflow-batteries-windows-x64-cpu", "src\tensorflow-batteries-windows-x64-cpu\tensorflow-batteries-windows-x64-cpu.csproj", "{5173CC95-9295-4139-A883-468ABC23C4A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscs", "Miscs", "{B484CBD7-4FCA-4741-A0DB-F767664599C4}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tensorflow-batteries-windows-x64-gpu", "src\tensorflow-batteries-windows-x64-gpu\tensorflow-batteries-windows-x64-gpu.csproj", "{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC33F1FC-00CB-4E1A-8AA8-03CC36308DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC33F1FC-00CB-4E1A-8AA8-03CC36308DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC33F1FC-00CB-4E1A-8AA8-03CC36308DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC33F1FC-00CB-4E1A-8AA8-03CC36308DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AE30308-0FC4-47E1-B440-EF5A53A872B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AE30308-0FC4-47E1-B440-EF5A53A872B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AE30308-0FC4-47E1-B440-EF5A53A872B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AE30308-0FC4-47E1-B440-EF5A53A872B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5173CC95-9295-4139-A883-468ABC23C4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5173CC95-9295-4139-A883-468ABC23C4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5173CC95-9295-4139-A883-468ABC23C4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5173CC95-9295-4139-A883-468ABC23C4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA33E8E-BA92-4C76-AA4C-B87EDD6F2168}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F533581D-52A9-4CCF-B0DF-3427BF9FC492}
+	EndGlobalSection
+EndGlobal
