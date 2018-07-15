@@ -25,6 +25,10 @@
       <PackagePath>build\build.targets</PackagePath>
       <Pack>true</Pack>
     </Content>
+    <Content Include="..\runtimes\python36.dll">
+      <PackagePath>runtimes\win-x64\native\python36.dll</PackagePath>
+      <Pack>true</Pack>
+    </Content>
   </ItemGroup>
 
   <UsingTask TaskName="TensowflowBinariesBuildTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />

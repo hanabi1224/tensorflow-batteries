@@ -33,7 +33,10 @@ namespace TensorflowBinariesBuildTask
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.Load(stream);
                 var anchors = htmlDoc.DocumentNode.SelectNodes(@".//div[@id='files']//td//a");
-                var selection = anchors.FirstOrDefault(_ => _.InnerText.ToLowerInvariant().Contains(Runtime.ToLowerInvariant()));
+                var selection = anchors
+                    .Where(_=>_.InnerText.ToLowerInvariant().Contains("cp36"))
+                    .First(_ => _.InnerText.ToLowerInvariant().Contains(Runtime.ToLowerInvariant()));
+
                 var wheelLink = selection.GetAttributeValue("href", null);
 
                 using (var ms = new MemoryStream(await httpClient.GetByteArrayAsync(wheelLink)))
