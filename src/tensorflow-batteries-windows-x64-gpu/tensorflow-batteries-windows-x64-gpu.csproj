@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <BattaryFilePath>$(MSBuildProjectDirectory)libtensorflow.dll</BattaryFilePath>
+    <BattaryFilePath>$(MSBuildProjectDirectory)\libtensorflow.dll</BattaryFilePath>
   </PropertyGroup>
 
   <ItemGroup>
