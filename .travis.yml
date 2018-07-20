@@ -1,0 +1,10 @@
+language: csharp
+script:
+  - dotnet restore
+  - dotnet build -c Release test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
+  - dotnet test -c Release --no-build test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
+mono: none
+dotnet: "2.1.300"
+os:
+  - linux
+  - osx
