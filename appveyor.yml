@@ -10,6 +10,8 @@ branches:
 configuration: Release
 before_build:
 - cmd: dotnet restore
+build:
+  verbosity: minimal
 artifacts:
 - path: '**\*.nupkg'
 matrix:
@@ -19,12 +21,10 @@ for:
     matrix:
       only:
         - image: Ubuntu
-      build:
-        project: test
-        verbosity: minimal
+    build:
+      project: test
+      verbosity: minimal
   -
     matrix:
       only:
         - image: Visual Studio 2017
-      build:
-        verbosity: minimal
