@@ -21,8 +21,10 @@ for:
     matrix:
       only:
         - image: Ubuntu
+    before_build:
+      - cmd: dotnet restore test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
     build:
-      project: test
+      project: test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
       verbosity: minimal
   -
     matrix:
