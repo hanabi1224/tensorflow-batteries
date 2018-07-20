@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Build.Framework;
 using TensorflowBinariesBuildTask.Core;
 
 namespace TensorflowBinariesBuildTask
@@ -13,7 +16,9 @@ namespace TensorflowBinariesBuildTask
 
         public string Runtime { get; set; }
 
-        public string OutputPath { get; set; }
+        public string OutputDir { get; set; }
+
+        public ITaskItem[] FilesToExtract { get; set; }
 
         public override bool Execute()
         {
@@ -22,12 +27,24 @@ namespace TensorflowBinariesBuildTask
 
         private Task<bool> ExecuteAsync()
         {
+            if (!(FilesToExtract?.Length > 0))
+            {
+                throw new ArgumentException($"{nameof(FilesToExtract)} property cannot be empty");
+            }
+
+            var filesToExtract = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var item in FilesToExtract)
+            {
+                filesToExtract[item.GetMetadata("OriginalFileName")] = item.GetMetadata("TargetFileName");
+            }
+
             return TensowflowBinariesBuildTaskUtils.ExecuteAsync(
                 runtime: Runtime,
                 pythonVersion: PythonVersion,
                 pypiPackageName: PypiPackageName,
                 pypiPackageVersion: PypiPackageVersion,
-                outputPath: OutputPath);
+                outputDir: OutputDir,
+                filesToExtract: filesToExtract);
         }
     }
 }

@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <BattaryFilePath>$(MSBuildProjectDirectory)\libtensorflow.dll</BattaryFilePath>
+    <BattaryFileDir>$(MSBuildProjectDirectory)\</BattaryFileDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,9 +39,15 @@
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
     <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
-    <TensowflowBinariesBuildTask PypiPackageName="$(TensorflowPackageName)" PypiPackageVersion="$(TensorflowVersion)" Runtime="win" OutputPath="$(BattaryFilePath)" />
     <ItemGroup>
-      <Content Include="$(BattaryFilePath)">
+      <FileToExtract Include="dummy">
+        <OriginalFileName>_pywrap_tensorflow_internal.pyd</OriginalFileName>
+        <TargetFileName>libtensorflow.dll</TargetFileName>
+      </FileToExtract>
+    </ItemGroup>
+    <TensowflowBinariesBuildTask PypiPackageName="$(TensorflowPackageName)" PypiPackageVersion="$(TensorflowVersion)" Runtime="win" OutputDir="$(BattaryFileDir)" FilesToExtract="@(FileToExtract)" />
+    <ItemGroup>
+      <Content Include="$(BattaryFileDir)\libtensorflow.dll">
         <PackagePath>runtimes\win-x64\native\libtensorflow.dll</PackagePath>
         <Pack>true</Pack>
       </Content>

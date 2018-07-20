@@ -9,8 +9,7 @@ using TensorflowBinariesBuildTask.Core;
 
 namespace TensorflowBinariesBuildTask.Tests
 {
-    //[Parallelizable(ParallelScope.All)]
-    [NonParallelizable]
+    [Parallelizable(ParallelScope.All)]
     [TestFixture]
     public class BuildTaskTests
     {
@@ -36,21 +35,46 @@ namespace TensorflowBinariesBuildTask.Tests
         {
             Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-            var outputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion, "libtensorflow.dll");
+            var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion);
+            string outputFileName;
             const string pythonVersion = "cp36";
+
+            IDictionary<string, string> filesToExtract = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.MacOSX:
+                    runtime = "osx";
+                    outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.dylib";
+                    filesToExtract["libtensorflow_framework.so"] = "libtensorflow_framework.dylib";
+                    break;
+                case PlatformID.Unix:
+                    outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.so";
+                    filesToExtract["libtensorflow_framework.so"] = null;
+                    runtime = "linux";
+                    break;
+                default:
+                    outputFileName = filesToExtract["_pywrap_tensorflow_internal.pyd"] = "libtensorflow.dll";
+                    break;
+            }
+
+            var libFullPath = Path.Combine(outputDir, outputFileName);
 
             await TensowflowBinariesBuildTaskUtils.ExecuteAsync(
                 runtime: runtime,
                 pythonVersion: pythonVersion,
                 pypiPackageName: packageName,
                 pypiPackageVersion: packageVersion,
-                outputPath: outputPath);
+                outputDir: outputDir,
+                filesToExtract: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["_pywrap_tensorflow_internal.pyd"] = "libtensorflow.dll",
+                });
 
-            FileAssert.Exists(outputPath);
+            FileAssert.Exists(libFullPath);
 
             if (!shouldSkipTesting)
             {
-                var pLib = LoadLibrary(outputPath);
+                var pLib = LoadLibrary(libFullPath);
                 var pFunc = Marshal.GetDelegateForFunctionPointer<TF_Version>(GetProcAddress(pLib, nameof(TF_Version)));
 
                 var versionPtr = pFunc();
