@@ -34,15 +34,19 @@ namespace TensorflowBinariesBuildTask.Tests
             IDictionary<string, string> filesToExtract = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             switch (Environment.OSVersion.Platform)
             {
-                case PlatformID.MacOSX:
-                    runtime = "osx";
-                    outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.dylib";
-                    outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = "libtensorflow_framework.dylib";
-                    break;
                 case PlatformID.Unix:
-                    outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.so";
-                    outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = null;
-                    runtime = "linux";
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        runtime = "osx";
+                        outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.dylib";
+                        outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = "libtensorflow_framework.dylib";
+                    }
+                    else
+                    {
+                        outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.so";
+                        outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = null;
+                        runtime = "linux";
+                    }
                     break;
                 default:
                     outputFileName = filesToExtract["_pywrap_tensorflow_internal.pyd"] = "libtensorflow.dll";
@@ -95,11 +99,15 @@ namespace TensorflowBinariesBuildTask.Tests
             string runtime;
             switch (Environment.OSVersion.Platform)
             {
-                case PlatformID.MacOSX:
-                    runtime = "osx";
-                    break;
                 case PlatformID.Unix:
-                    runtime = "linux";
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        runtime = "osx";
+                    }
+                    else
+                    {
+                        runtime = "linux";
+                    }
                     break;
                 default:
                     runtime = "win";
