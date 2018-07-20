@@ -24,7 +24,7 @@ namespace TensorflowBinariesBuildTask.Tests
             string packageVersion,
             bool shouldSkipTesting)
         {
-            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Environment.SetEnvironmentVariable("LD_DEBUG", "unused");
 
             var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion);
             string outputFileName;
