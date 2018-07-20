@@ -65,10 +65,7 @@ namespace TensorflowBinariesBuildTask.Tests
                 pypiPackageName: packageName,
                 pypiPackageVersion: packageVersion,
                 outputDir: outputDir,
-                filesToExtract: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                {
-                    ["_pywrap_tensorflow_internal.pyd"] = "libtensorflow.dll",
-                });
+                filesToExtract: filesToExtract);
 
             FileAssert.Exists(libFullPath);
 
