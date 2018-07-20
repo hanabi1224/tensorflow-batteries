@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.8.5" />
     <PackageReference Include="Microsoft.Build.Framework" Version="15.7.179" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.179" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.IO.Compression" />
+    <ProjectReference Include="..\TensorflowBinariesBuildTask.Core\TensorflowBinariesBuildTask.Core.csproj" />
   </ItemGroup>
 
 </Project>
