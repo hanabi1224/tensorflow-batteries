@@ -9,7 +9,7 @@ environment:
     #- TensorflowVersion: 1.4.0
     #- TensorflowVersion: 1.5.0
     #- TensorflowVersion: 1.6.0
-    #- TensorflowVersion: 1.7.0
+    - TensorflowVersion: 1.7.0
     - TensorflowVersion: 1.8.0
     - TensorflowVersion: 1.9.0
 pull_requests:
