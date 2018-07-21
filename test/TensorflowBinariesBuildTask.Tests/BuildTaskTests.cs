@@ -44,7 +44,7 @@ namespace TensorflowBinariesBuildTask.Tests
                     else
                     {
                         outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.so";
-                        outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = null;
+                        outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = "libtensorflow_framework.so";
                         runtime = "linux";
                     }
                     break;
@@ -72,11 +72,11 @@ namespace TensorflowBinariesBuildTask.Tests
                 if (!string.IsNullOrEmpty(outputFrameworkFileName))
                 {
                     pFrameworkLib = NativeMethods.LoadLibrary(Path.Combine(outputDir, outputFrameworkFileName));
-                    Console.WriteLine($"{nameof(pFrameworkLib)}: {pFrameworkLib}");
+                    Console.WriteLine($"{nameof(pFrameworkLib)}: {pFrameworkLib} ({outputFrameworkFileName})");
                 }
 
                 var pLib = NativeMethods.LoadLibrary(libFullPath);
-                Console.WriteLine($"{nameof(pLib)}: {pLib}");
+                Console.WriteLine($"{nameof(pLib)}: {pLib} ({libFullPath})");
 
                 var pFunc = Marshal.GetDelegateForFunctionPointer<TF_Version>(NativeMethods.GetProcAddress(pLib, nameof(TF_Version)));
                 Console.WriteLine($"{nameof(pFunc)}: {pFunc}");
@@ -117,7 +117,9 @@ namespace TensorflowBinariesBuildTask.Tests
             foreach (var package in new[] { "tensorflow", "tensorflow-gpu" })
             {
                 var shouldSkipTesting = package.Contains("gpu");
-                foreach (var version in new[] { "1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6", "1.7", "1.7.1", "1.8", "1.9" })
+                foreach (var version in new[] {
+                    //"1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6",
+                    "1.7", "1.7.1", "1.8", "1.9" })
                 {
                     yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
                 }
