@@ -69,6 +69,7 @@ namespace TensorflowBinariesBuildTask.Tests
             if (!shouldSkipTesting)
             {
                 IntPtr pFrameworkLib = IntPtr.Zero;
+                outputFrameworkFileName = null;
                 if (!string.IsNullOrEmpty(outputFrameworkFileName))
                 {
                     pFrameworkLib = NativeMethods.LoadLibrary(Path.Combine(outputDir, outputFrameworkFileName));
@@ -117,9 +118,12 @@ namespace TensorflowBinariesBuildTask.Tests
             foreach (var package in new[] { "tensorflow", "tensorflow-gpu" })
             {
                 var shouldSkipTesting = package.Contains("gpu");
-                foreach (var version in new[] {
-                    "1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6",
-                    "1.7", "1.7.1", "1.8", "1.9" })
+                foreach (var version in new[] 
+                {
+                    "1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6", "1.7", "1.7.1",
+                    "1.8",
+                    "1.9",
+                })
                 {
                     yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
                 }
