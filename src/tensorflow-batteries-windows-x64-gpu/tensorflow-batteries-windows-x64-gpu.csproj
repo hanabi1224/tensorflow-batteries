@@ -9,7 +9,7 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageId>tensorflow-batteries-windows-x64-gpu</PackageId>
     <TensorflowPackageName>tensorflow-gpu</TensorflowPackageName>
-    <PackageVersion>$(TensorflowVersion).1.pre1</PackageVersion>
+    <PackageVersion>$(TensorflowVersion).1-pre1</PackageVersion>
     <Authors>hanabi1224</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>tensorflow native dlls (Windows x64 gpu)</Description>
