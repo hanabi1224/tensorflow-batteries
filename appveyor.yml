@@ -1,5 +1,7 @@
 version: 1.0.{build}
-image: Visual Studio 2017
+image:
+  #- Ubuntu
+  - Visual Studio 2017
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -12,3 +14,19 @@ build:
   verbosity: minimal
 artifacts:
 - path: '**\*.nupkg'
+matrix:
+  fast_finish: true
+for:
+  -
+    matrix:
+      only:
+        - image: Ubuntu
+    before_build:
+      - cmd: dotnet restore test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
+    build:
+      project: test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
+      verbosity: minimal
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2017

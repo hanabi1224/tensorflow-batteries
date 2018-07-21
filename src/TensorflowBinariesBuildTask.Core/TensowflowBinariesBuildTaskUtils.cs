@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
@@ -16,7 +17,8 @@ namespace TensorflowBinariesBuildTask.Core
             string pythonVersion,
             string pypiPackageName,
             string pypiPackageVersion,
-            string outputPath)
+            string outputDir,
+            IDictionary<string, string> filesToExtract)
         {
             var url = string.Format(PypiUrlTemplate, pypiPackageName, pypiPackageVersion);
             using (var httpClient = new HttpClient())
@@ -34,16 +36,17 @@ namespace TensorflowBinariesBuildTask.Core
                 using (var ms = new MemoryStream(await httpClient.GetByteArrayAsync(wheelLink)))
                 using (var zip = new ZipArchive(ms))
                 {
-                    foreach (var entry in zip.Entries.Where(_ => _.FullName.EndsWith(".pyd")))
+                    foreach (var entry in zip.Entries)
                     {
-                        var dir = Path.GetDirectoryName(outputPath);
-                        if (!Directory.Exists(dir))
+                        if (filesToExtract.TryGetValue(entry.Name, out var targetFileName))
                         {
-                            Directory.CreateDirectory(dir);
-                        }
+                            if (!Directory.Exists(outputDir))
+                            {
+                                Directory.CreateDirectory(outputDir);
+                            }
 
-                        entry.ExtractToFile(outputPath, true);
-                        break;
+                            entry.ExtractToFile(Path.Combine(outputDir, string.IsNullOrWhiteSpace(targetFileName) ? entry.Name : targetFileName), true);
+                        }
                     }
                 }
             }

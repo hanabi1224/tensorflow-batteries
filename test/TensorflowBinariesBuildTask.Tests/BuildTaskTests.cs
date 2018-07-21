@@ -9,20 +9,10 @@ using TensorflowBinariesBuildTask.Core;
 
 namespace TensorflowBinariesBuildTask.Tests
 {
-    //[Parallelizable(ParallelScope.All)]
-    [NonParallelizable]
+    [Parallelizable(ParallelScope.All)]
     [TestFixture]
     public class BuildTaskTests
     {
-        [DllImport("kernel32")]
-        static extern IntPtr LoadLibrary(string lpFileName);
-
-        [DllImport("kernel32", SetLastError = true)]
-        static extern bool FreeLibrary(IntPtr hModule);
-
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string procedureName);
-
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr TF_Version();
 
@@ -34,30 +24,73 @@ namespace TensorflowBinariesBuildTask.Tests
             string packageVersion,
             bool shouldSkipTesting)
         {
-            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            Environment.SetEnvironmentVariable("LD_DEBUG", "unused");
 
-            var outputPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion, "libtensorflow.dll");
+            var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion);
+            string outputFileName;
+            string outputFrameworkFileName;
             const string pythonVersion = "cp36";
+
+            IDictionary<string, string> filesToExtract = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        runtime = "osx";
+                        outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.dylib";
+                        outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = "libtensorflow_framework.dylib";
+                    }
+                    else
+                    {
+                        outputFileName = filesToExtract["_pywrap_tensorflow_internal.so"] = "libtensorflow.so";
+                        outputFrameworkFileName = filesToExtract["libtensorflow_framework.so"] = "libtensorflow_framework.so";
+                        runtime = "linux";
+                    }
+                    break;
+                default:
+                    outputFileName = filesToExtract["_pywrap_tensorflow_internal.pyd"] = "libtensorflow.dll";
+                    outputFrameworkFileName = null;
+                    break;
+            }
+
+            var libFullPath = Path.Combine(outputDir, outputFileName);
 
             await TensowflowBinariesBuildTaskUtils.ExecuteAsync(
                 runtime: runtime,
                 pythonVersion: pythonVersion,
                 pypiPackageName: packageName,
                 pypiPackageVersion: packageVersion,
-                outputPath: outputPath);
+                outputDir: outputDir,
+                filesToExtract: filesToExtract);
 
-            FileAssert.Exists(outputPath);
+            FileAssert.Exists(libFullPath);
 
             if (!shouldSkipTesting)
             {
-                var pLib = LoadLibrary(outputPath);
-                var pFunc = Marshal.GetDelegateForFunctionPointer<TF_Version>(GetProcAddress(pLib, nameof(TF_Version)));
+                IntPtr pFrameworkLib = IntPtr.Zero;
+                if (!string.IsNullOrEmpty(outputFrameworkFileName))
+                {
+                    pFrameworkLib = NativeMethods.LoadLibrary(Path.Combine(outputDir, outputFrameworkFileName));
+                    Console.WriteLine($"{nameof(pFrameworkLib)}: {pFrameworkLib} ({outputFrameworkFileName})");
+                }
+
+                var pLib = NativeMethods.LoadLibrary(libFullPath);
+                Console.WriteLine($"{nameof(pLib)}: {pLib} ({libFullPath})");
+
+                var pFunc = Marshal.GetDelegateForFunctionPointer<TF_Version>(NativeMethods.GetProcAddress(pLib, nameof(TF_Version)));
+                Console.WriteLine($"{nameof(pFunc)}: {pFunc}");
 
                 var versionPtr = pFunc();
                 var version = Marshal.PtrToStringAnsi(versionPtr);
                 version.Should().Contain(packageVersion);
 
-                FreeLibrary(pLib);
+                NativeMethods.FreeLibrary(pLib);
+
+                if (pFrameworkLib != IntPtr.Zero)
+                {
+                    NativeMethods.FreeLibrary(pFrameworkLib);
+                }
             }
         }
 
@@ -66,11 +99,15 @@ namespace TensorflowBinariesBuildTask.Tests
             string runtime;
             switch (Environment.OSVersion.Platform)
             {
-                case PlatformID.MacOSX:
-                    runtime = "osx";
-                    break;
                 case PlatformID.Unix:
-                    runtime = "linux";
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        runtime = "osx";
+                    }
+                    else
+                    {
+                        runtime = "linux";
+                    }
                     break;
                 default:
                     runtime = "win";
@@ -80,11 +117,85 @@ namespace TensorflowBinariesBuildTask.Tests
             foreach (var package in new[] { "tensorflow", "tensorflow-gpu" })
             {
                 var shouldSkipTesting = package.Contains("gpu");
-                foreach (var version in new[] { "1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6", "1.7", "1.7.1", "1.8", "1.9" })
+                foreach (var version in new[] {
+                    "1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6",
+                    "1.7", "1.7.1", "1.8", "1.9" })
                 {
                     yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
                 }
             }
         }
+    }
+
+    public static class NativeMethods
+    {
+        private const int RTLD_NOW = 2;
+
+        public static IntPtr LoadLibrary(string lpFileName)
+        {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    return RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? LoadLibraryOSX(lpFileName, RTLD_NOW) : LoadLibraryLinux(lpFileName, RTLD_NOW);
+                default:
+                    return LoadLibraryWindows(lpFileName);
+            }
+        }
+
+        public static bool FreeLibrary(IntPtr hModule)
+        {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    return RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? FreeLibraryOSX(hModule) == 0 : FreeLibraryLinux(hModule) == 0;
+                default:
+                    return FreeLibraryWindows(hModule);
+            }
+        }
+
+        public static IntPtr GetProcAddress(IntPtr hModule, string procedureName)
+        {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    return RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? GetProcAddressOSX(hModule, procedureName) : GetProcAddressLinux(hModule, procedureName);
+                default:
+                    return GetProcAddressWindows(hModule, procedureName);
+            }
+        }
+
+        // http://dimitry-i.blogspot.com/2013/01/mononet-how-to-dynamically-load-native.html
+        [DllImport("kernel32", EntryPoint = "LoadLibrary")]
+        private static extern IntPtr LoadLibraryWindows(string lpFileName);
+
+        [DllImport("kernel32", EntryPoint = "FreeLibrary", SetLastError = true)]
+        private static extern bool FreeLibraryWindows(IntPtr hModule);
+
+        [DllImport("kernel32", EntryPoint = "GetProcAddress")]
+        private static extern IntPtr GetProcAddressWindows(IntPtr hModule, string procedureName);
+
+        [DllImport("libdl", EntryPoint = "dlopen")]
+        private static extern IntPtr LoadLibraryLinux(String fileName, int flags);
+
+        [DllImport("libdl", EntryPoint = "dlsym")]
+        private static extern IntPtr GetProcAddressLinux(IntPtr handle, String symbol);
+
+        [DllImport("libdl", EntryPoint = "dlclose")]
+        private static extern int FreeLibraryLinux(IntPtr handle);
+
+        //[DllImport("libdl", EntryPoint = "dlerror")]
+        //private static extern IntPtr dlerror();
+
+        [DllImport("libc", EntryPoint = "dlopen")]
+        private static extern IntPtr LoadLibraryOSX(String fileName, int flags);
+
+        [DllImport("libc", EntryPoint = "dlsym")]
+        private static extern IntPtr GetProcAddressOSX(IntPtr handle, String symbol);
+
+        [DllImport("libc", EntryPoint = "dlclose")]
+        private static extern int FreeLibraryOSX(IntPtr handle);
+
+        //[DllImport("libc", EntryPoint = "dlerror")]
+        //private static extern IntPtr dlerror();
     }
 }

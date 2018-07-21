@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Miscs", "Miscs", "{B484CBD7-4FCA-4741-A0DB-F767664599C4}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
