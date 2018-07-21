@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.0;netstandard2.0;</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Device>gpu</Device>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <PackageId>tensorflow-batteries-linux-x64-$(Device)</PackageId>
+    <TensorflowPackageName>tensorflow</TensorflowPackageName>
+    <PackageVersion>$(TensorflowVersion).1-pre1</PackageVersion>
+    <Authors>hanabi1224</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>tensorflow native dlls (linux x64 $(Device))</Description>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/hanabi1224/tensorflow-batteries</PackageProjectUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>tensorflow;</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BattaryFileDir>$(MSBuildProjectDirectory)\</BattaryFileDir>
+  </PropertyGroup>
+  
+  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+
+  <Target Name="BeforeBuild" BeforeTargets="Build">
+    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
+    <TensowflowBinariesBuildFromStorageTask OS="linux" device="$(Device)" version="$(TensorflowVersion)" OutputDir="$(BattaryFileDir)" />
+    <ItemGroup>
+      <Content Include="$(BattaryFileDir)\libtensorflow.so">
+        <PackagePath>runtimes\linux\native\libtensorflow.so</PackagePath>
+        <Pack>true</Pack>
+      </Content>
+    <Content Include="$(BattaryFileDir)\libtensorflow_framework.so">
+        <PackagePath>runtimes\linux\native\libtensorflow_framework.so</PackagePath>
+        <Pack>true</Pack>
+      </Content>
+    </ItemGroup>
+  </Target>
+
+</Project>
