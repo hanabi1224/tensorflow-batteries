@@ -5,9 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
@@ -92,25 +90,30 @@ namespace TensorflowBinariesBuildTask.Core
                 if (packageUrl.EndsWith(".tar.gz"))
                 {
                     var gzipStream = new GZipInputStream(ms);
-                    var tarIn = new TarInputStream(gzipStream);
-                    TarEntry tarEntry;
-                    while ((tarEntry = tarIn.GetNextEntry()) != null)
+                    using (var tarIn = new TarInputStream(gzipStream))
                     {
-                        if (tarEntry.IsDirectory)
+                        TarEntry tarEntry;
+                        while ((tarEntry = tarIn.GetNextEntry()) != null)
                         {
-                            continue;
-                        }
-
-                        var fileName = Path.GetFileName(tarEntry.Name);
-                        if (extentions.Any(_ => fileName.EndsWith(_, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            var targetFileName = fileName;
-                            if (os.ToLowerInvariant().Contains("darwin"))
+                            if (tarEntry.IsDirectory)
                             {
-                                targetFileName = $"{Path.GetFileNameWithoutExtension(fileName)}.dylib";
+                                continue;
                             }
 
-                            tarIn.CopyEntryContents(File.OpenWrite(Path.Combine(outputDir, targetFileName)));
+                            var fileName = Path.GetFileName(tarEntry.Name);
+                            if (extentions.Any(_ => fileName.EndsWith(_, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                var targetFileName = fileName;
+                                if (os.ToLowerInvariant().Contains("darwin"))
+                                {
+                                    targetFileName = $"{Path.GetFileNameWithoutExtension(fileName)}.dylib";
+                                }
+
+                                using (var fs = File.OpenWrite(Path.Combine(outputDir, targetFileName)))
+                                {
+                                    tarIn.CopyEntryContents(fs);
+                                }
+                            }
                         }
                     }
                 }

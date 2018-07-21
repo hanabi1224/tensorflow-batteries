@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tensorflow-batteries-window
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TensorflowBinariesBuildTask.Core", "src\TensorflowBinariesBuildTask.Core\TensorflowBinariesBuildTask.Core.csproj", "{172CA8B5-0DA1-4B5C-ACE3-94C4ED6F7DA3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tensorflow-batteries-linux-x64-cpu", "src\tensorflow-batteries-linux-x64-cpu\tensorflow-batteries-linux-x64-cpu.csproj", "{0A84D444-8ED3-4FC0-B091-88BC507FA2EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tensorflow-batteries-linux-x64-gpu", "src\tensorflow-batteries-linux-x64-gpu\tensorflow-batteries-linux-x64-gpu.csproj", "{7A4A8264-337E-4AAB-8E67-70F950FE7F41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{172CA8B5-0DA1-4B5C-ACE3-94C4ED6F7DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{172CA8B5-0DA1-4B5C-ACE3-94C4ED6F7DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{172CA8B5-0DA1-4B5C-ACE3-94C4ED6F7DA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A84D444-8ED3-4FC0-B091-88BC507FA2EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A84D444-8ED3-4FC0-B091-88BC507FA2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A84D444-8ED3-4FC0-B091-88BC507FA2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A84D444-8ED3-4FC0-B091-88BC507FA2EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A4A8264-337E-4AAB-8E67-70F950FE7F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A4A8264-337E-4AAB-8E67-70F950FE7F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A4A8264-337E-4AAB-8E67-70F950FE7F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A4A8264-337E-4AAB-8E67-70F950FE7F41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
