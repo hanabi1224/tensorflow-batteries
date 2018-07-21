@@ -94,6 +94,14 @@ namespace TensorflowBinariesBuildTask.Tests
 
         public static IEnumerable<TestCaseData> CreateTestCasesWindows()
         {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    yield break;
+                default:
+                    break;
+            }
+
             var runtime = "win";
             foreach (var package in new[] { "tensorflow", "tensorflow-gpu" })
             {
@@ -115,6 +123,7 @@ namespace TensorflowBinariesBuildTask.Tests
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Unix:
+                //case PlatformID.Win32NT:
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     {
                         os = "darwin";
@@ -128,13 +137,13 @@ namespace TensorflowBinariesBuildTask.Tests
                 default:
                     yield break;
             }
-            
+
             foreach (var device in devices)
             {
                 var shouldSkipTesting = device.Contains("gpu");
                 foreach (var version in new[]
                 {
-                    "1.2.0", "1.2.1", "1.3.0", "1.4.0", "1.5.0", "1.5.1", "1.6.0", "1.7.0", "1.7.1", "1.8.0", "1.9.0",
+                    "1.7.0", "1.8.0", "1.9.0",
                 })
                 {
                     yield return new TestCaseData(device, os, version, shouldSkipTesting).SetName($"[{os}][{device}][{version}]");
