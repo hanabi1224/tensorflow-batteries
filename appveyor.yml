@@ -23,6 +23,7 @@ before_build:
 - cmd: dotnet restore
 build:
   verbosity: minimal
+  parallel: true
 artifacts:
 - path: '**\*.nupkg'
 nuget:
