@@ -8,8 +8,8 @@
 | ---------------  | ------------- |
 | windows-x64-cpu  | [![NuGet version](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-cpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-cpu)  |
 | windows-x64-gpu  | [![NuGet version](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-gpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-gpu)  |
-| linux-cpu        | TODO  |
-| linux-gpu        | TODO  |
+| linux-cpu        | [![NuGet version](https://badge.fury.io/nu/tensorflow-batteries-linux-x64-cpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-linux-x64-cpu)  |
+| linux-gpu        | [![NuGet version](https://badge.fury.io/nu/tensorflow-batteries-linux-x64-gpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-linux-x64-gpu)  |
 | macos-cpu        | TODO  |
 | macos-gpu        | TODO  |
 

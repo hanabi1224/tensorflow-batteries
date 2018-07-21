@@ -7,4 +7,4 @@ mono: none
 dotnet: "2.1.300"
 os:
   - linux
-  - osx
+  #- osx
