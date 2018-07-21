@@ -246,13 +246,13 @@ namespace TensorflowBinariesBuildTask.Tests
         //[DllImport("libdl", EntryPoint = "dlerror")]
         //private static extern IntPtr dlerror();
 
-        [DllImport("libc", EntryPoint = "dlopen")]
+        [DllImport("libdl", EntryPoint = "dlopen")]
         private static extern IntPtr LoadLibraryOSX(String fileName, int flags);
 
-        [DllImport("libc", EntryPoint = "dlsym")]
+        [DllImport("libdl", EntryPoint = "dlsym")]
         private static extern IntPtr GetProcAddressOSX(IntPtr handle, String symbol);
 
-        [DllImport("libc", EntryPoint = "dlclose")]
+        [DllImport("libdl", EntryPoint = "dlclose")]
         private static extern int FreeLibraryOSX(IntPtr handle);
 
         //[DllImport("libc", EntryPoint = "dlerror")]
