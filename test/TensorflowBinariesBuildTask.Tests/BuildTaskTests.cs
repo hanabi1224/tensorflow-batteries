@@ -133,10 +133,8 @@ namespace TensorflowBinariesBuildTask.Tests
         {
             switch (Environment.OSVersion.Platform)
             {
-                case PlatformID.MacOSX:
-                    return LoadLibraryOSX(lpFileName, RTLD_NOW);
                 case PlatformID.Unix:
-                    return LoadLibraryLinux(lpFileName, RTLD_NOW);
+                    return RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? LoadLibraryOSX(lpFileName, RTLD_NOW) : LoadLibraryLinux(lpFileName, RTLD_NOW);
                 default:
                     return LoadLibraryWindows(lpFileName);
             }
@@ -146,10 +144,8 @@ namespace TensorflowBinariesBuildTask.Tests
         {
             switch (Environment.OSVersion.Platform)
             {
-                case PlatformID.MacOSX:
-                    return FreeLibraryOSX(hModule) == 0;
                 case PlatformID.Unix:
-                    return FreeLibraryLinux(hModule) == 0;
+                    return RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? FreeLibraryOSX(hModule) == 0 : FreeLibraryLinux(hModule) == 0;
                 default:
                     return FreeLibraryWindows(hModule);
             }
@@ -159,10 +155,8 @@ namespace TensorflowBinariesBuildTask.Tests
         {
             switch (Environment.OSVersion.Platform)
             {
-                case PlatformID.MacOSX:
-                    return GetProcAddressOSX(hModule, procedureName);
                 case PlatformID.Unix:
-                    return GetProcAddressLinux(hModule, procedureName);
+                    return RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? GetProcAddressOSX(hModule, procedureName) : GetProcAddressLinux(hModule, procedureName);
                 default:
                     return GetProcAddressWindows(hModule, procedureName);
             }
