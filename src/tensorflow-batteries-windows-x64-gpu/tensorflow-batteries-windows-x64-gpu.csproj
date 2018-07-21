@@ -9,7 +9,6 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageId>tensorflow-batteries-windows-x64-gpu</PackageId>
     <TensorflowPackageName>tensorflow-gpu</TensorflowPackageName>
-    <TensorflowVersion>1.9.0</TensorflowVersion>
     <PackageVersion>$(TensorflowVersion).0</PackageVersion>
     <Authors>hanabi1224</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

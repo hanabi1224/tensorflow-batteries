@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <TensorflowVersion Condition="'$(TensorflowVersion)' == ''">1.9.0</TensorflowVersion>
+  </PropertyGroup>
+</Project>
