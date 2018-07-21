@@ -104,7 +104,13 @@ namespace TensorflowBinariesBuildTask.Core
                         var fileName = Path.GetFileName(tarEntry.Name);
                         if (extentions.Any(_ => fileName.EndsWith(_, StringComparison.OrdinalIgnoreCase)))
                         {
-                            tarIn.CopyEntryContents(File.OpenWrite(Path.Combine(outputDir, fileName)));
+                            var targetFileName = fileName;
+                            if (os.ToLowerInvariant().Contains("darwin"))
+                            {
+                                targetFileName = $"{Path.GetFileNameWithoutExtension(fileName)}.dylib";
+                            }
+
+                            tarIn.CopyEntryContents(File.OpenWrite(Path.Combine(outputDir, targetFileName)));
                         }
                     }
                 }

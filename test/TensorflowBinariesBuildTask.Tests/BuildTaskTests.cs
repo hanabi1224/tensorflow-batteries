@@ -143,7 +143,7 @@ namespace TensorflowBinariesBuildTask.Tests
                 var shouldSkipTesting = device.Contains("gpu");
                 foreach (var version in new[]
                 {
-                    "1.7.0", "1.8.0", "1.9.0",
+                    "1.9.0",
                 })
                 {
                     yield return new TestCaseData(device, os, version, shouldSkipTesting).SetName($"[{os}][{device}][{version}]");
