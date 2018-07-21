@@ -35,7 +35,7 @@
     </Content>
   </ItemGroup>
 
-  <UsingTask TaskName="TensowflowBinariesBuildTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
     <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
@@ -45,7 +45,7 @@
         <TargetFileName>libtensorflow.dll</TargetFileName>
       </FileToExtract>
     </ItemGroup>
-    <TensowflowBinariesBuildTask PypiPackageName="$(TensorflowPackageName)" PypiPackageVersion="$(TensorflowVersion)" Runtime="win" OutputDir="$(BattaryFileDir)" FilesToExtract="@(FileToExtract)" />
+    <TensowflowBinariesBuildFromWheelTask PypiPackageName="$(TensorflowPackageName)" PypiPackageVersion="$(TensorflowVersion)" Runtime="win" OutputDir="$(BattaryFileDir)" FilesToExtract="@(FileToExtract)" />
     <ItemGroup>
       <Content Include="$(BattaryFileDir)\libtensorflow.dll">
         <PackagePath>runtimes\win-x64\native\libtensorflow.dll</PackagePath>

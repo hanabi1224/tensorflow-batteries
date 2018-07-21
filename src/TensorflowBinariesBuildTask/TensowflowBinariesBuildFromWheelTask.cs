@@ -6,7 +6,7 @@ using TensorflowBinariesBuildTask.Core;
 
 namespace TensorflowBinariesBuildTask
 {
-    public class TensowflowBinariesBuildTask : Microsoft.Build.Utilities.Task
+    public class TensowflowBinariesBuildFromWheelTask : Microsoft.Build.Utilities.Task
     {
         public string PypiPackageName { get; set; }
 
@@ -38,7 +38,7 @@ namespace TensorflowBinariesBuildTask
                 filesToExtract[item.GetMetadata("OriginalFileName")] = item.GetMetadata("TargetFileName");
             }
 
-            return TensowflowBinariesBuildTaskUtils.ExecuteAsync(
+            return TensowflowBinariesBuildTaskUtils.BuildFromWheelAsync(
                 runtime: Runtime,
                 pythonVersion: PythonVersion,
                 pypiPackageName: PypiPackageName,

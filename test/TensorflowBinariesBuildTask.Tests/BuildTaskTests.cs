@@ -17,15 +17,35 @@ namespace TensorflowBinariesBuildTask.Tests
         private delegate IntPtr TF_Version();
 
         [Test]
-        [TestCaseSource(nameof(CreateTestCases))]
-        public async Task E2EAsync(
+        [TestCaseSource(nameof(CreateTestCasesUnix))]
+        public async Task E2ETestUnixAsync(
+            string device,
+            string os,
+            string version,
+            bool shouldSkipTesting)
+        {
+            var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"tensorflow-{device}", version);
+
+            await TensowflowBinariesBuildTaskUtils.BuildFromStorageAsync(
+                device: device,
+                os: os,
+                version: version,
+                outputDir: outputDir);
+
+            if (!shouldSkipTesting)
+            {
+                ValidateNativeBinaryVersion(outputDir, version);
+            }
+        }
+
+        [Test]
+        [TestCaseSource(nameof(CreateTestCasesWindows))]
+        public async Task E2ETestWindowsAsync(
             string runtime,
             string packageName,
             string packageVersion,
             bool shouldSkipTesting)
         {
-            Environment.SetEnvironmentVariable("LD_DEBUG", "unused");
-
             var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion);
             string outputFileName;
             string outputFrameworkFileName;
@@ -56,7 +76,7 @@ namespace TensorflowBinariesBuildTask.Tests
 
             var libFullPath = Path.Combine(outputDir, outputFileName);
 
-            await TensowflowBinariesBuildTaskUtils.ExecuteAsync(
+            await TensowflowBinariesBuildTaskUtils.BuildFromWheelAsync(
                 runtime: runtime,
                 pythonVersion: pythonVersion,
                 pypiPackageName: packageName,
@@ -68,66 +88,93 @@ namespace TensorflowBinariesBuildTask.Tests
 
             if (!shouldSkipTesting)
             {
-                IntPtr pFrameworkLib = IntPtr.Zero;
-                outputFrameworkFileName = null;
-                if (!string.IsNullOrEmpty(outputFrameworkFileName))
-                {
-                    pFrameworkLib = NativeMethods.LoadLibrary(Path.Combine(outputDir, outputFrameworkFileName));
-                    Console.WriteLine($"{nameof(pFrameworkLib)}: {pFrameworkLib} ({outputFrameworkFileName})");
-                }
-
-                var pLib = NativeMethods.LoadLibrary(libFullPath);
-                Console.WriteLine($"{nameof(pLib)}: {pLib} ({libFullPath})");
-
-                var pFunc = Marshal.GetDelegateForFunctionPointer<TF_Version>(NativeMethods.GetProcAddress(pLib, nameof(TF_Version)));
-                Console.WriteLine($"{nameof(pFunc)}: {pFunc}");
-
-                var versionPtr = pFunc();
-                var version = Marshal.PtrToStringAnsi(versionPtr);
-                version.Should().Contain(packageVersion);
-
-                NativeMethods.FreeLibrary(pLib);
-
-                if (pFrameworkLib != IntPtr.Zero)
-                {
-                    NativeMethods.FreeLibrary(pFrameworkLib);
-                }
+                ValidateNativeBinaryVersion(outputDir, packageVersion);
             }
         }
 
-        public static IEnumerable<TestCaseData> CreateTestCases()
+        public static IEnumerable<TestCaseData> CreateTestCasesWindows()
         {
-            string runtime;
-            switch (Environment.OSVersion.Platform)
-            {
-                case PlatformID.Unix:
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    {
-                        runtime = "osx";
-                    }
-                    else
-                    {
-                        runtime = "linux";
-                    }
-                    break;
-                default:
-                    runtime = "win";
-                    break;
-            }
-
+            var runtime = "win";
             foreach (var package in new[] { "tensorflow", "tensorflow-gpu" })
             {
                 var shouldSkipTesting = package.Contains("gpu");
-                foreach (var version in new[] 
+                foreach (var version in new[]
                 {
-                    //"1.2", "1.2.1", "1.3", "1.4", "1.5", "1.5.1", "1.6", "1.7", "1.7.1",
-                    //"1.8",
-                    "1.9",
+                    "1.2.0", "1.2.1", "1.3.0", "1.4.0", "1.5.0", "1.5.1", "1.6.0", "1.7.0", "1.7.1", "1.8.0", "1.9.0",
                 })
                 {
                     yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
                 }
             }
+        }
+
+        public static IEnumerable<TestCaseData> CreateTestCasesUnix()
+        {
+            string os;
+            var devices = new List<string> { "cpu" };
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        os = "darwin";
+                    }
+                    else
+                    {
+                        os = "linux";
+                        devices.Add("gpu");
+                    }
+                    break;
+                default:
+                    yield break;
+            }
+            
+            foreach (var device in devices)
+            {
+                var shouldSkipTesting = device.Contains("gpu");
+                foreach (var version in new[]
+                {
+                    "1.2.0", "1.2.1", "1.3.0", "1.4.0", "1.5.0", "1.5.1", "1.6.0", "1.7.0", "1.7.1", "1.8.0", "1.9.0",
+                })
+                {
+                    yield return new TestCaseData(device, os, version, shouldSkipTesting).SetName($"[{os}][{device}][{version}]");
+                }
+            }
+        }
+
+        private static void ValidateNativeBinaryVersion(string outputDir, string expectedVersion)
+        {
+            string extension;
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    {
+                        extension = ".dylib";
+                    }
+                    else
+                    {
+                        extension = ".so";
+                    }
+                    break;
+                default:
+                    extension = ".dll";
+                    break;
+            }
+
+            var libFullPath = Path.Combine(outputDir, $"libtensorflow{extension}");
+
+            var pLib = NativeMethods.LoadLibrary(libFullPath);
+            Console.WriteLine($"{nameof(pLib)}: {pLib} ({libFullPath})");
+
+            var pFunc = Marshal.GetDelegateForFunctionPointer<TF_Version>(NativeMethods.GetProcAddress(pLib, nameof(TF_Version)));
+            Console.WriteLine($"{nameof(pFunc)}: {pFunc}");
+
+            var versionPtr = pFunc();
+            var version = Marshal.PtrToStringAnsi(versionPtr);
+            version.Should().Contain(expectedVersion);
+
+            NativeMethods.FreeLibrary(pLib);
         }
     }
 
