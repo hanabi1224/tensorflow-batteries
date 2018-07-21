@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.0;netstandard2.0;</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -9,8 +9,7 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageId>tensorflow-batteries-windows-x64-cpu</PackageId>
     <TensorflowPackageName>tensorflow</TensorflowPackageName>
-    <TensorflowVersion>1.9.0</TensorflowVersion>
-    <PackageVersion>$(TensorflowVersion).0</PackageVersion>
+    <PackageVersion>$(TensorflowVersion).1-pre1</PackageVersion>
     <Authors>hanabi1224</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>tensorflow native dlls (Windows x64 cpu)</Description>

@@ -2,11 +2,16 @@ version: 1.0.{build}
 image:
   - Ubuntu
   - Visual Studio 2017
+environment:
+  matrix:
+    - TensorflowVersion: 1.8.0
+    - TensorflowVersion: 1.9.0
 pull_requests:
   do_not_increment_build_number: true
 branches:
   only:
   - master
+skip_branch_with_pr: true
 configuration: Release
 before_build:
 - cmd: dotnet restore
@@ -14,6 +19,12 @@ build:
   verbosity: minimal
 artifacts:
 - path: '**\*.nupkg'
+nuget:
+  disable_publish_on_pr: true
+deploy:
+  provider: NuGet
+  api_key:
+    secure: nNWiXk+ZiOOh5sHV/C9Z9pqZ8GFpaQFqAR/P0/t09h81Ppx3xed6VsWd4w7FMn2R
 matrix:
   fast_finish: true
 for:

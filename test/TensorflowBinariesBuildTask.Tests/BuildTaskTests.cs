@@ -46,6 +46,8 @@ namespace TensorflowBinariesBuildTask.Tests
             string packageVersion,
             bool shouldSkipTesting)
         {
+            Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
             var outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, packageName, packageVersion);
             string outputFileName;
             string outputFrameworkFileName;
@@ -106,13 +108,14 @@ namespace TensorflowBinariesBuildTask.Tests
             foreach (var package in new[] { "tensorflow", "tensorflow-gpu" })
             {
                 var shouldSkipTesting = package.Contains("gpu");
-                foreach (var version in new[]
-                {
-                    "1.2.0", "1.2.1", "1.3.0", "1.4.0", "1.5.0", "1.5.1", "1.6.0", "1.7.0", "1.7.1", "1.8.0", "1.9.0",
-                })
-                {
-                    yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
-                }
+                //foreach (var version in new[]
+                //{
+                //    "1.2.0", "1.2.1", "1.3.0", "1.4.0", "1.5.0", "1.5.1", "1.6.0", "1.7.0", "1.7.1", "1.8.0", "1.9.0",
+                //})
+                //{
+                var version = Environment.GetEnvironmentVariable("TensorflowVersion") ?? "1.9.0";
+                yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
+                //}
             }
         }
 
@@ -123,7 +126,7 @@ namespace TensorflowBinariesBuildTask.Tests
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Unix:
-                //case PlatformID.Win32NT:
+                    //case PlatformID.Win32NT:
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     {
                         os = "darwin";
@@ -141,13 +144,8 @@ namespace TensorflowBinariesBuildTask.Tests
             foreach (var device in devices)
             {
                 var shouldSkipTesting = device.Contains("gpu");
-                foreach (var version in new[]
-                {
-                    "1.9.0",
-                })
-                {
-                    yield return new TestCaseData(device, os, version, shouldSkipTesting).SetName($"[{os}][{device}][{version}]");
-                }
+                var version = Environment.GetEnvironmentVariable("TensorflowVersion") ?? "1.9.0";
+                yield return new TestCaseData(device, os, version, shouldSkipTesting).SetName($"[{os}][{device}][{version}]");
             }
         }
 
