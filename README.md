@@ -8,10 +8,10 @@
 
 | Runtimes         | Nuget package |
 | ---------------  | ------------- |
-| windows-x64-cpu  | [![NuGet version](https://img.shields.io/nuget/v/tensorflow-batteries-windows-x64-cpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-cpu)  |
-| windows-x64-gpu  | [![NuGet version](https://img.shields.io/nuget/v/tensorflow-batteries-windows-x64-gpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-windows-x64-gpu)  |
-| linux-cpu        | [![NuGet version](https://img.shields.io/nuget/v/tensorflow-batteries-linux-x64-cpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-linux-x64-cpu)  |
-| linux-gpu        | [![NuGet version](https://img.shields.io/nuget/v/tensorflow-batteries-linux-x64-gpu.svg)](https://badge.fury.io/nu/tensorflow-batteries-linux-x64-gpu)  |
+| windows-x64-cpu  | [![NuGet version](https://buildstats.info/nuget/tensorflow-batteries-windows-x64-cpu)](https://www.nuget.org/packages/tensorflow-batteries-windows-x64-cpu)  |
+| windows-x64-gpu  | [![NuGet version](https://buildstats.info/nuget/tensorflow-batteries-windows-x64-gpu)](https://www.nuget.org/packages/tensorflow-batteries-windows-x64-gpu)  |
+| linux-cpu        | [![NuGet version](https://buildstats.info/nuget/tensorflow-batteries-linux-x64-cpu)](https://www.nuget.org/packages/tensorflow-batteries-linux-x64-cpu)  |
+| linux-gpu        | [![NuGet version](https://buildstats.info/nuget/tensorflow-batteries-linux-x64-gpu)](https://www.nuget.org/packages/tensorflow-batteries-linux-x64-gpu)  |
 | macos-cpu        | TODO  |
 | macos-gpu        | TODO  |
 
