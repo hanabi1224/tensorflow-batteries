@@ -1,8 +1,8 @@
 # tensorflow-batteries
 
-[![Build Status](https://img.shields.io/travis/hanabi1224/tensorflow-batteries.svg)](https://travis-ci.org/hanabi1224/tensorflow-batteries)
-[![Build status](https://img.shields.io/appveyor/ci/hanabi1224/tensorflow-batteries.svg)](https://ci.appveyor.com/project/hanabi1224/tensorflow-batteries)
-[![Test status](https://img.shields.io/appveyor/tests/hanabi1224/tensorflow-batteries.svg)](https://ci.appveyor.com/project/hanabi1224/tensorflow-batteries)
+[![Build Status](https://img.shields.io/travis/hanabi1224/tensorflow-batteries/master.svg)](https://travis-ci.org/hanabi1224/tensorflow-batteries)
+[![Build status](https://img.shields.io/appveyor/ci/hanabi1224/tensorflow-batteries/master.svg)](https://ci.appveyor.com/project/hanabi1224/tensorflow-batteries)
+[![Test status](https://img.shields.io/appveyor/tests/hanabi1224/tensorflow-batteries/master.svg)](https://ci.appveyor.com/project/hanabi1224/tensorflow-batteries)
 [![MIT License](https://img.shields.io/github/license/hanabi1224/tensorflow-batteries.svg)](https://github.com/hanabi1224/tensorflow-batteries/blob/master/LICENSE)
 ========
 
