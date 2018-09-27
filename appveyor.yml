@@ -13,6 +13,7 @@ environment:
     - TensorflowVersion: 1.8.0
     - TensorflowVersion: 1.9.0
     - TensorflowVersion: 1.10.0
+    - TensorflowVersion: 1.11.0
 pull_requests:
   do_not_increment_build_number: true
 branches:
