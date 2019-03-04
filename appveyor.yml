@@ -4,6 +4,7 @@ image:
   - Visual Studio 2017
 environment:
   matrix:
+    - TensorflowVersion: 1.13.1
     - TensorflowVersion: 1.12.0
     - TensorflowVersion: 1.11.0
     - TensorflowVersion: 1.10.0
@@ -16,16 +17,16 @@ pull_requests:
   do_not_increment_build_number: true
 branches:
   only:
-  - master
+    - master
 skip_branch_with_pr: true
 configuration: Release
 before_build:
-- cmd: dotnet restore
+  - cmd: dotnet restore
 build:
   verbosity: minimal
   parallel: true
 artifacts:
-- path: '**\*.nupkg'
+  - path: '**\*.nupkg'
 nuget:
   disable_publish_on_pr: true
 deploy:
@@ -35,8 +36,7 @@ deploy:
 matrix:
   fast_finish: true
 for:
-  -
-    matrix:
+  - matrix:
       only:
         - image: Ubuntu
     before_build:
@@ -44,7 +44,6 @@ for:
     build:
       project: test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
       verbosity: minimal
-  -
-    matrix:
+  - matrix:
       only:
         - image: Visual Studio 2017
