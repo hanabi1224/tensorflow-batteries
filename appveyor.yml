@@ -5,6 +5,7 @@ image:
 environment:
   matrix:
     - TensorflowVersion: 1.13.1
+    - TensorflowVersion: 1.12.2
     - TensorflowVersion: 1.12.0
     - TensorflowVersion: 1.11.0
     - TensorflowVersion: 1.10.0
