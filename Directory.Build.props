@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
     <NoWarn>NU1701;$(NoWarn)</NoWarn>
-    <TensorflowVersion Condition="'$(TensorflowVersion)' == ''">1.13.1</TensorflowVersion>
+    <TensorflowVersion Condition="'$(TensorflowVersion)' == ''">1.14.0</TensorflowVersion>
   </PropertyGroup>
 </Project>
