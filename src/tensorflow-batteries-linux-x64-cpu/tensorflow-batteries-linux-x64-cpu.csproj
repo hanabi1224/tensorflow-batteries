@@ -30,14 +30,6 @@
     <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
     <TensowflowBinariesBuildFromStorageTask OS="linux" device="$(Device)" version="$(TensorflowVersion)" OutputDir="$(BattaryFileDir)" />
     <ItemGroup>
-      <!--<Content Include="$(BattaryFileDir)\libtensorflow.so">
-        <PackagePath>runtimes\linux\native\libtensorflow.so</PackagePath>
-        <Pack>true</Pack>
-      </Content>
-      <Content Include="$(BattaryFileDir)\libtensorflow_framework.so">
-        <PackagePath>runtimes\linux\native\libtensorflow_framework.so</PackagePath>
-        <Pack>true</Pack>
-      </Content>-->
       <Content Include="$(BattaryFileDir)\libtensorflow*.so*">
         <PackagePath>runtimes\linux\native\%(Filename)%(Extension)</PackagePath>
         <Pack>true</Pack>
