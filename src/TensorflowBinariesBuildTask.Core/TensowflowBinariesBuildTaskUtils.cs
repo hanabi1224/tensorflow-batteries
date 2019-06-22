@@ -27,9 +27,14 @@ namespace TensorflowBinariesBuildTask.Core
             IDictionary<string, string> filesToExtract)
         {
             var url = string.Format(PypiUrlTemplate, pypiPackageName, pypiPackageVersion);
-            using (var httpClient = new HttpClient())
+            using (var httpClient = new HttpClient
             {
-                var stream = await httpClient.GetStreamAsync(url).ConfigureAwait(false);
+                Timeout = TimeSpan.FromSeconds(120),
+            })
+            {
+                var response = await httpClient.GetAsync(url).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.Load(stream);
                 var anchors = htmlDoc.DocumentNode.SelectNodes(@".//div[@id='files']//td//a");
@@ -124,7 +129,7 @@ namespace TensorflowBinariesBuildTask.Core
                     {
                         foreach (var entry in zip.Entries)
                         {
-                            if (extentions.Any(_ => entry.Name.EndsWith(_, StringComparison.OrdinalIgnoreCase)))
+                            if (extentions.Any(_ => entry.Name.ToLowerInvariant().Contains(_.ToLowerInvariant())))
                             {
                                 entry.ExtractToFile(Path.Combine(outputDir, entry.Name), true);
                             }
