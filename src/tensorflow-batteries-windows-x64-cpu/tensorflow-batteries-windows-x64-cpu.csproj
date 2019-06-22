@@ -34,7 +34,7 @@
     </Content>
   </ItemGroup>
 
-  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\$(BuildTaskTargetFramework)\TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
     <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />

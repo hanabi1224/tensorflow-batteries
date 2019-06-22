@@ -2,5 +2,6 @@
   <PropertyGroup>
     <NoWarn>NU1701;$(NoWarn)</NoWarn>
     <TensorflowVersion Condition="'$(TensorflowVersion)' == ''">1.14.0</TensorflowVersion>
+    <BuildTaskTargetFramework>net472</BuildTaskTargetFramework>
   </PropertyGroup>
 </Project>
