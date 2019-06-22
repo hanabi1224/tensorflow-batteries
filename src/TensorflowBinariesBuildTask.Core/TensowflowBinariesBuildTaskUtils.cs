@@ -71,7 +71,10 @@ namespace TensorflowBinariesBuildTask.Core
             string version,
             string outputDir)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(120),
+            })
             {
                 var prefix = $"libtensorflow-{device}-{os}-";
 
@@ -106,7 +109,7 @@ namespace TensorflowBinariesBuildTask.Core
                             }
 
                             var fileName = Path.GetFileName(tarEntry.Name);
-                            if (extentions.Any(_ => fileName.EndsWith(_, StringComparison.OrdinalIgnoreCase)))
+                            if (extentions.Any(_ => fileName.ToLowerInvariant().Contains(_.ToLowerInvariant())))
                             {
                                 var targetFileName = fileName;
                                 if (os.ToLowerInvariant().Contains("darwin"))
@@ -117,6 +120,21 @@ namespace TensorflowBinariesBuildTask.Core
                                 using (var fs = File.OpenWrite(Path.Combine(outputDir, targetFileName)))
                                 {
                                     tarIn.CopyEntryContents(fs);
+                                }
+
+                                if (targetFileName.EndsWith($".{version}"))
+                                {
+                                    var newTargetFileName = targetFileName.Substring(0, targetFileName.IndexOf(".so.") + 5);
+                                    using (var fs = File.OpenWrite(Path.Combine(outputDir, newTargetFileName)))
+                                    {
+                                        tarIn.CopyEntryContents(fs);
+                                    }
+
+                                    newTargetFileName = targetFileName.Substring(0, targetFileName.IndexOf(".so.") + 3);
+                                    using (var fs = File.OpenWrite(Path.Combine(outputDir, newTargetFileName)))
+                                    {
+                                        tarIn.CopyEntryContents(fs);
+                                    }
                                 }
                             }
                         }
