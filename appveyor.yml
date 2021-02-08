@@ -1,18 +1,7 @@
 version: 1.0.{build}
 image:
   - Ubuntu
-  - Visual Studio 2017
-environment:
-  matrix:
-    - TensorflowVersion: 1.13.1
-    - TensorflowVersion: 1.12.0
-    - TensorflowVersion: 1.11.0
-    - TensorflowVersion: 1.10.0
-    #- TensorflowVersion: 1.9.0
-    #- TensorflowVersion: 1.8.0
-    #- TensorflowVersion: 1.7.0
-    #- TensorflowVersion: 1.6.0
-    #- TensorflowVersion: 1.5.0
+  - Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -20,11 +9,7 @@ branches:
     - master
 skip_branch_with_pr: true
 configuration: Release
-before_build:
-  - cmd: dotnet restore
-build:
-  verbosity: minimal
-  parallel: true
+build: off
 artifacts:
   - path: '**\*.nupkg'
 nuget:
@@ -32,7 +17,7 @@ nuget:
 deploy:
   provider: NuGet
   api_key:
-    secure: nNWiXk+ZiOOh5sHV/C9Z9pqZ8GFpaQFqAR/P0/t09h81Ppx3xed6VsWd4w7FMn2R
+    secure: oAHIyS9ywws1FkW2wadKEGo3WLcNo41ERWTJFxkmKz4nZrE3KH28eJjkrRSQmWbN
 matrix:
   fast_finish: true
 for:
@@ -40,10 +25,42 @@ for:
       only:
         - image: Ubuntu
     before_build:
-      - cmd: dotnet restore test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
-    build:
-      project: test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
-      verbosity: minimal
+      - dotnet publish -c Release src/TensorflowBinariesBuildTask
+    build_script:
+      # TF 1.13.2
+      # - export TensorflowVersion=1.32.2
+      # - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      # - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
+      # - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
+      # TF 1.12.0
+      - export TensorflowVersion=1.12.0
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
   - matrix:
       only:
-        - image: Visual Studio 2017
+        - image: Visual Studio 2019
+    before_build:
+      - dotnet restore
+      - dotnet publish -c Release src/TensorflowBinariesBuildTask
+    build_script:
+      # TF 1.15.5
+      - set TensorflowVersion=1.15.5
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
+        # TF 1.14.0
+      - set TensorflowVersion=1.14.0
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
+        # TF 1.13.2
+      - set TensorflowVersion=1.13.2
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
+        # TF 1.12.0
+      - set TensorflowVersion=1.12.0
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu

@@ -1,16 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
-
 
   <PropertyGroup>
     <Device>gpu</Device>
@@ -29,21 +22,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <BattaryFileDir>$(MSBuildProjectDirectory)\</BattaryFileDir>
+    <BattaryFileDir>$(MSBuildProjectDirectory)/</BattaryFileDir>
   </PropertyGroup>
   
-  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)../TensorflowBinariesBuildTask/bin/$(Configuration)/netcoreapp3.1/publish/TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
-    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
+    <!--<MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Target="Publish" />-->
     <TensowflowBinariesBuildFromStorageTask OS="linux" device="$(Device)" version="$(TensorflowVersion)" OutputDir="$(BattaryFileDir)" />
     <ItemGroup>
-      <Content Include="$(BattaryFileDir)\libtensorflow.so">
-        <PackagePath>runtimes\linux\native\libtensorflow.so</PackagePath>
+      <Content Include="$(BattaryFileDir)/libtensorflow.so">
+        <PackagePath>runtimes/linux/native/libtensorflow.so</PackagePath>
         <Pack>true</Pack>
       </Content>
-    <Content Include="$(BattaryFileDir)\libtensorflow_framework.so">
-        <PackagePath>runtimes\linux\native\libtensorflow_framework.so</PackagePath>
+      <Content Include="$(BattaryFileDir)/libtensorflow_framework.so">
+        <PackagePath>runtimes/linux/native/libtensorflow_framework.so</PackagePath>
         <Pack>true</Pack>
       </Content>
     </ItemGroup>

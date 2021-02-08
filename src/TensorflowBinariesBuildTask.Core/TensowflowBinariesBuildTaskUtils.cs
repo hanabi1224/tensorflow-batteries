@@ -32,7 +32,7 @@ namespace TensorflowBinariesBuildTask.Core
                 var stream = await httpClient.GetStreamAsync(url).ConfigureAwait(false);
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.Load(stream);
-                var anchors = htmlDoc.DocumentNode.SelectNodes(@".//div[@id='files']//td//a");
+                var anchors = htmlDoc.DocumentNode.SelectNodes(@".//div[@id='files']//th//a");
                 var selection = anchors
                     .Where(_ => _.InnerText.ToLowerInvariant().Contains(pythonVersion))
                     .First(_ => _.InnerText.ToLowerInvariant().Contains(runtime.ToLowerInvariant()));

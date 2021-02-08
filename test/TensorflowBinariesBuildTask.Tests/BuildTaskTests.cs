@@ -13,6 +13,8 @@ namespace TensorflowBinariesBuildTask.Tests
     [TestFixture]
     public class BuildTaskTests
     {
+        const string DefaultTFVersion = "1.13.2";
+
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr TF_Version();
 
@@ -113,7 +115,7 @@ namespace TensorflowBinariesBuildTask.Tests
                 //    "1.2.0", "1.2.1", "1.3.0", "1.4.0", "1.5.0", "1.5.1", "1.6.0", "1.7.0", "1.7.1", "1.8.0", "1.9.0",
                 //})
                 //{
-                var version = Environment.GetEnvironmentVariable("TensorflowVersion") ?? "1.9.0";
+                var version = Environment.GetEnvironmentVariable("TensorflowVersion") ?? DefaultTFVersion;
                 yield return new TestCaseData(runtime, package, version, shouldSkipTesting).SetName($"[{runtime}][{package}][{version}]");
                 //}
             }
@@ -144,7 +146,7 @@ namespace TensorflowBinariesBuildTask.Tests
             foreach (var device in devices)
             {
                 var shouldSkipTesting = device.Contains("gpu");
-                var version = Environment.GetEnvironmentVariable("TensorflowVersion") ?? "1.9.0";
+                var version = Environment.GetEnvironmentVariable("TensorflowVersion") ?? DefaultTFVersion;
                 yield return new TestCaseData(device, os, version, shouldSkipTesting).SetName($"[{os}][{device}][{version}]");
             }
         }

@@ -1,10 +1,12 @@
 language: csharp
 script:
   - dotnet restore
-  - dotnet build -c Release test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
-  - dotnet test -c Release --no-build test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
+  - dotnet publish -c Release src/TensorflowBinariesBuildTask
+  - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
+  - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
+  - dotnet test -c Release --no-build test/TensorflowBinariesBuildTask.Tests
 mono: none
-dotnet: "2.1.400"
+dotnet: "3.1.405"
 os:
   - linux
   #- osx
