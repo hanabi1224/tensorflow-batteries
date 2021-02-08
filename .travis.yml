@@ -1,7 +1,8 @@
 language: csharp
 script:
   - dotnet restore
-  - dotnet build -c Release test/TensorflowBinariesBuildTask.Tests
+  - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
+  - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
   - dotnet test -c Release --no-build test/TensorflowBinariesBuildTask.Tests
 mono: none
 dotnet: "3.1.405"

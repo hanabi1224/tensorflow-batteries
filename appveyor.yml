@@ -24,13 +24,15 @@ for:
   - matrix:
       only:
         - image: Ubuntu
-    environment:
-      matrix:
-        - TensorflowVersion: 1.13.2
-        - TensorflowVersion: 1.12.0
     before_build:
       - dotnet publish -c Release -r netcoreapp3.1 src/TensorflowBinariesBuildTask
     build_script:
+        # TF 1.13.2
+      - export TensorflowVersion=1.32.2
+      - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
+        # TF 1.12.0
+      - export TensorflowVersion=1.12.0
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
     test_script:
@@ -47,6 +49,20 @@ for:
     before_build:
       - dotnet restore
     build_script:
+        # TF 1.15.5
+      - set TensorflowVersion=1.15.5
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
+        # TF 1.14.0
+      - set TensorflowVersion=1.14.0
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
+        # TF 1.13.2
+      - set TensorflowVersion=1.13.2
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
+        # TF 1.12.0
+      - set TensorflowVersion=1.12.0
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
     test_script:
