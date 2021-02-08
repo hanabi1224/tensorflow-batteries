@@ -42,7 +42,7 @@
     </Content>
   </ItemGroup>
 
-  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\netcoreapp3.1\publish\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)../TensorflowBinariesBuildTask/bin/$(Configuration)/netcoreapp3.1/publish/TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
     <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Targets="Publish" />

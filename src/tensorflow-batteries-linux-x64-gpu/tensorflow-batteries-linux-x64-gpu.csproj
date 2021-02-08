@@ -32,10 +32,10 @@
     <BattaryFileDir>$(MSBuildProjectDirectory)\</BattaryFileDir>
   </PropertyGroup>
   
-  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\netcoreapp3.1\publish\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)../TensorflowBinariesBuildTask/bin/$(Configuration)/netcoreapp3.1/publish/TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
-    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Target="Publish" />
+    <!--<MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Target="Publish" />-->
     <TensowflowBinariesBuildFromStorageTask OS="linux" device="$(Device)" version="$(TensorflowVersion)" OutputDir="$(BattaryFileDir)" />
     <ItemGroup>
       <Content Include="$(BattaryFileDir)\libtensorflow.so">
