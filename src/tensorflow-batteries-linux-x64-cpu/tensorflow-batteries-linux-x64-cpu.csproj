@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -32,10 +32,10 @@
     <BattaryFileDir>$(MSBuildProjectDirectory)\</BattaryFileDir>
   </PropertyGroup>
   
-  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromStorageTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\netcoreapp3.1\publish\TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
-    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
+    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Target="Publish" />
     <TensowflowBinariesBuildFromStorageTask OS="linux" device="$(Device)" version="$(TensorflowVersion)" OutputDir="$(BattaryFileDir)" />
     <ItemGroup>
       <Content Include="$(BattaryFileDir)\libtensorflow.so">

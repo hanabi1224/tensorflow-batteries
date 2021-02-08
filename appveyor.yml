@@ -22,11 +22,7 @@ branches:
     - master
 skip_branch_with_pr: true
 configuration: Release
-before_build:
-  - cmd: dotnet restore
-build:
-  verbosity: minimal
-  parallel: true
+build: off
 artifacts:
   - path: '**\*.nupkg'
 nuget:
@@ -41,11 +37,16 @@ for:
   - matrix:
       only:
         - image: Ubuntu
-    before_build:
-      - cmd: dotnet restore test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
-    build:
-      project: test/TensorflowBinariesBuildTask.Tests/TensorflowBinariesBuildTask.Tests.csproj
-      verbosity: minimal
+    build_script:
+      - dotnet build -c Release test/TensorflowBinariesBuildTask.Tests
+    test_script:
+      - dotnet test -c Release --no-build test/TensorflowBinariesBuildTask.Tests
   - matrix:
       only:
         - image: Visual Studio 2019
+    before_build:
+      - dotnet restore
+    build_script:
+      - dotnet build -c Release
+    test_script:
+      - dotnet test -c Release --no-build

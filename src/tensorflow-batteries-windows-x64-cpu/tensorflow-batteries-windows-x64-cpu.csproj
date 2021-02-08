@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.0;netstandard2.0;</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.0;</TargetFrameworks>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -42,10 +42,10 @@
     </Content>
   </ItemGroup>
 
-  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\net46\TensorflowBinariesBuildTask.dll" />
+  <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)..\TensorflowBinariesBuildTask\bin\$(Configuration)\netcoreapp3.1\publish\TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
-    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" />
+    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Targets="Publish" />
     <ItemGroup>
       <FileToExtract Include="dummy">
         <OriginalFileName>_pywrap_tensorflow_internal.pyd</OriginalFileName>
