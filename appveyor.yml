@@ -25,9 +25,9 @@ for:
       only:
         - image: Ubuntu
     before_build:
-      - dotnet publish -c Release -r netcoreapp3.1 src/TensorflowBinariesBuildTask
+      - dotnet publish -c Release src/TensorflowBinariesBuildTask
     build_script:
-        # TF 1.13.2
+      # TF 1.13.2
       - export TensorflowVersion=1.32.2
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
@@ -49,7 +49,7 @@ for:
     before_build:
       - dotnet restore
     build_script:
-        # TF 1.15.5
+      # TF 1.15.5
       - set TensorflowVersion=1.15.5
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
