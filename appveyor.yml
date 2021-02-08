@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image:
-  - Visual Studio 2019
   - Ubuntu
+  - Visual Studio 2019
 pull_requests:
   do_not_increment_build_number: true
 branches:
@@ -29,14 +29,14 @@ for:
     build_script:
       # TF 1.13.2
       - export TensorflowVersion=1.32.2
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
         # TF 1.12.0
       - export TensorflowVersion=1.12.0
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
-    test_script:
-      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
   - matrix:
       only:
         - image: Visual Studio 2019
@@ -46,19 +46,21 @@ for:
     build_script:
       # TF 1.15.5
       - set TensorflowVersion=1.15.5
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
         # TF 1.14.0
       - set TensorflowVersion=1.14.0
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
         # TF 1.13.2
       - set TensorflowVersion=1.13.2
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
         # TF 1.12.0
       - set TensorflowVersion=1.12.0
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
-    test_script:
-      - dotnet test -c Release
