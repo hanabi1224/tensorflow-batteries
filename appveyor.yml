@@ -28,11 +28,11 @@ for:
       - dotnet publish -c Release src/TensorflowBinariesBuildTask
     build_script:
       # TF 1.13.2
-      - export TensorflowVersion=1.32.2
-      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
-      - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
-      - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
-        # TF 1.12.0
+      # - export TensorflowVersion=1.32.2
+      # - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      # - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
+      # - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
+      # TF 1.12.0
       - export TensorflowVersion=1.12.0
       - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
