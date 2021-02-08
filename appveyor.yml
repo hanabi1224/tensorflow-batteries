@@ -40,14 +40,9 @@ for:
   - matrix:
       only:
         - image: Visual Studio 2019
-    environment:
-      matrix:
-        - TensorflowVersion: 1.15.5
-        - TensorflowVersion: 1.14.0
-        - TensorflowVersion: 1.13.2
-        - TensorflowVersion: 1.12.0
     before_build:
       - dotnet restore
+      - dotnet publish -c Release src/TensorflowBinariesBuildTask
     build_script:
       # TF 1.15.5
       - set TensorflowVersion=1.15.5

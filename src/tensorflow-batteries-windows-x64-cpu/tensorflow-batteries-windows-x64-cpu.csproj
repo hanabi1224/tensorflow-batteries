@@ -38,7 +38,7 @@
   <UsingTask TaskName="TensowflowBinariesBuildFromWheelTask" AssemblyFile="$(MSBuildThisFileDirectory)../TensorflowBinariesBuildTask/bin/$(Configuration)/netcoreapp3.1/publish/TensorflowBinariesBuildTask.dll" />
 
   <Target Name="BeforeBuild" BeforeTargets="Build">
-    <MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Targets="Publish" />
+    <!--<MSBuild Projects="..\TensorflowBinariesBuildTask\TensorflowBinariesBuildTask.csproj" Properties="Configuration=$(Configuration)" Targets="Publish" />-->
     <ItemGroup>
       <FileToExtract Include="dummy">
         <OriginalFileName>_pywrap_tensorflow_internal.pyd</OriginalFileName>
