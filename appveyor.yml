@@ -27,11 +27,6 @@ for:
     before_build:
       - dotnet publish -c Release src/TensorflowBinariesBuildTask
     build_script:
-      # TF 1.13.2
-      # - export TensorflowVersion=1.32.2
-      # - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
-      # - dotnet build -c Release src/tensorflow-batteries-linux-x64-cpu
-      # - dotnet build -c Release src/tensorflow-batteries-linux-x64-gpu
       # TF 1.12.0
       - export TensorflowVersion=1.12.0
       - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
@@ -44,22 +39,27 @@ for:
       - dotnet restore
       - dotnet publish -c Release src/TensorflowBinariesBuildTask
     build_script:
+      # TF 2.4.1
+      - set TensorflowVersion=2.4.1
+      - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
+      - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
       # TF 1.15.5
       - set TensorflowVersion=1.15.5
       - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
-        # TF 1.14.0
+      # TF 1.14.0
       - set TensorflowVersion=1.14.0
       - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
-        # TF 1.13.2
+      # TF 1.13.2
       - set TensorflowVersion=1.13.2
       - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-gpu
-        # TF 1.12.0
+      # TF 1.12.0
       - set TensorflowVersion=1.12.0
       - dotnet test -c Release test/TensorflowBinariesBuildTask.Tests
       - dotnet build -c Release src/tensorflow-batteries-windows-x64-cpu
