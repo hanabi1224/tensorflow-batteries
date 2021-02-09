@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using HtmlAgilityPack;
@@ -74,7 +75,7 @@ namespace TensorflowBinariesBuildTask.Core
                 var ns = "{" + indexDoc.Root.GetDefaultNamespace().NamespaceName + "}";
                 var keyNodes = indexDoc.Document.Elements().Single().Elements(ns + "Contents").Select(_ => _.Element(ns + "Key")).ToList();
                 var keyNode = keyNodes
-                    .Where(_ => !_.Value.Contains("rc") && _.Value.Contains(prefix) && _.Value.Contains(version))
+                    .Where(_ => !_.Value.Contains("rc") && _.Value.Contains(prefix) && _.Value.Contains(version + "."))
                     .Single();
 
                 var packageUrl = $"{GoogleStorageIndexUrl}{keyNode.Value}";
@@ -90,7 +91,7 @@ namespace TensorflowBinariesBuildTask.Core
                 if (packageUrl.EndsWith(".tar.gz"))
                 {
                     var gzipStream = new GZipInputStream(ms);
-                    using (var tarIn = new TarInputStream(gzipStream))
+                    using (var tarIn = new TarInputStream(gzipStream, Encoding.UTF8))
                     {
                         TarEntry tarEntry;
                         while ((tarEntry = tarIn.GetNextEntry()) != null)
@@ -104,7 +105,7 @@ namespace TensorflowBinariesBuildTask.Core
                             if (extentions.Any(_ => fileName.EndsWith(_, StringComparison.OrdinalIgnoreCase)))
                             {
                                 var targetFileName = fileName;
-                                if (os.ToLowerInvariant().Contains("darwin"))
+                                if (os.IndexOf("darwin", StringComparison.InvariantCultureIgnoreCase) >= 0)
                                 {
                                     targetFileName = $"{Path.GetFileNameWithoutExtension(fileName)}.dylib";
                                 }

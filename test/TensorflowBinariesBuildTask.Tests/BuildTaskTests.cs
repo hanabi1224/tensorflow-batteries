@@ -13,7 +13,7 @@ namespace TensorflowBinariesBuildTask.Tests
     [TestFixture]
     public class BuildTaskTests
     {
-        const string DefaultTFVersion = "1.13.2";
+        const string DefaultTFVersion = "1.12.0";
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr TF_Version();
